@@ -25,6 +25,19 @@ class RulesBased {
   
         return reply;
     }  
+
+    async getState() {
+      const endingState = this.interpreter.saveState();
+
+      return endingState;
+    }
+
+    async getLastReply() {
+        const lastReply = this.interpreter.savePreviousAnswer();
+
+        return lastReply;
+    }
+
 };
 
 exports.RulesBased = RulesBased;

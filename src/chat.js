@@ -2,10 +2,13 @@
 
 "use strict";
 
+const fs = require("fs");
 const readline = require("readline");
+
 const chatbot = require("./chatbot.js");
 
 const rulesFile = "./rules/rules.aiml";
+const brainFile = "./brain.json";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -34,11 +37,38 @@ const isExitString = function (input) {
   return false;
 };
 
-async function main() {
-  console.log("\n Use 'quit' or 'exit' to leave the bot\n");
+function loadHistory(brainFile) {
+  if (fs.existsSync(brainFile)) {
+    const rawdata = fs.readFileSync(brainFile);
+    
+    const history = JSON.parse(rawdata);
+    let previousAnswer = "";
+
+    if (history["previous-answer"] !== undefined) {
+      previousAnswer = history["previous-answer"];
+      delete history["previous-answer"];
+    }
+
+    return history, previousAnswer;
+  }
 
   const history = {};
   const previousAnswer = "";
+  return history, previousAnswer;
+}
+
+function saveHistory(brainFile, history, previousAnswer) {
+  const stateToSave = history;
+  stateToSave["previous-answer"] = previousAnswer;
+  const data = JSON.stringify(stateToSave);
+
+  fs.writeFileSync(brainFile, data);
+}
+
+async function main() {
+  console.log("\n Use 'quit' or 'exit' to leave the bot\n");
+
+  const {history, previousAnswer} = loadHistory(brainFile);
   const bot = new chatbot.Chatbot(rulesFile, history, previousAnswer);
 
   let done = false;
@@ -53,6 +83,10 @@ async function main() {
       console.log(response);
     }
   }
+
+  const endingState = bot.getState() ;
+  const lastReply = bot.getLastReply();
+  saveHistory(brainFile, endingState, lastReply)
 
   rl.close();
 }
