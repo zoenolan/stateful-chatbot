@@ -13,8 +13,8 @@ const findAnswerPromise = (interpreter, ...args) => {
 };
 
 class RulesBased {
-    constructor(rulesFile) {
-      this.interpreter = new AimlHigh({}, {}, "");
+    constructor(rulesFile, history, previousAnswer) {
+      this.interpreter = new AimlHigh({}, history, previousAnswer);
       this.interpreter.loadFiles([rulesFile]);
     }
 
@@ -25,6 +25,19 @@ class RulesBased {
   
         return reply;
     }  
+
+    async getState() {
+      const endingState = this.interpreter.saveState();
+
+      return endingState;
+    }
+
+    async getLastReply() {
+        const lastReply = this.interpreter.savePreviousAnswer();
+
+        return lastReply;
+    }
+
 };
 
 exports.RulesBased = RulesBased;

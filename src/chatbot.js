@@ -5,8 +5,8 @@
 const rulesBased = require("./rules.js");
 
 class Chatbot {
-    constructor(rulesFile) {
-        this.rulesBased = new rulesBased.RulesBased(rulesFile);  
+    constructor(rulesFile, history, previousAnswer) {
+        this.rulesBased = new rulesBased.RulesBased(rulesFile, history, previousAnswer);  
     }
 
     emptyReply(reply)   {   
@@ -19,6 +19,18 @@ class Chatbot {
 
         return reply;
     }  
+
+    async getState() {
+        const endingState = this.rulesBased.getState();
+
+        return endingState;
+    }
+
+    async getLastReply() {
+        const lastReply = this.rulesBased.getLastReply();
+
+        return lastReply;
+    }
 };
 
 exports.Chatbot = Chatbot;
