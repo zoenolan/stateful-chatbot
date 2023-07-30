@@ -49,12 +49,12 @@ function loadHistory(brainFile) {
       delete history["previous-answer"];
     }
 
-    return history, previousAnswer;
+    return {history, previousAnswer};
   }
 
   const history = {};
   const previousAnswer = "";
-  return history, previousAnswer;
+  return {history, previousAnswer};
 }
 
 function saveHistory(brainFile, history, previousAnswer) {
@@ -69,7 +69,7 @@ async function main() {
   console.log("\n Use 'quit' or 'exit' to leave the bot\n");
 
   const {history, previousAnswer} = loadHistory(brainFile);
-  const bot = new chatbot.Chatbot(rulesFile, history, previousAnswer);
+  let bot = new chatbot.Chatbot(rulesFile, history, previousAnswer);
 
   let done = false;
   while (!done) {
@@ -84,8 +84,8 @@ async function main() {
     }
   }
 
-  const endingState = bot.getState() ;
-  const lastReply = bot.getLastReply();
+  const endingState = await bot.getState() ;
+  const lastReply = await bot.getLastReply();
   saveHistory(brainFile, endingState, lastReply)
 
   rl.close();
