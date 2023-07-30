@@ -5,8 +5,8 @@
 const rulesBased = require("./rules.js");
 
 class Chatbot {
-    constructor(rulesFile) {
-        this.rulesBased = new rulesBased.RulesBased(rulesFile);  
+    constructor(rulesFile, history, previousAnswer) {
+        this.rulesBased = new rulesBased.RulesBased(rulesFile, history, previousAnswer);  
     }
 
     emptyReply(reply)   {   

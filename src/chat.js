@@ -37,7 +37,9 @@ const isExitString = function (input) {
 async function main() {
   console.log("\n Use 'quit' or 'exit' to leave the bot\n");
 
-  const bot = new chatbot.Chatbot(rulesFile);
+  const history = {};
+  const previousAnswer = "";
+  const bot = new chatbot.Chatbot(rulesFile, history, previousAnswer);
 
   let done = false;
   while (!done) {

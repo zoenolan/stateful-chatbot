@@ -13,8 +13,8 @@ const findAnswerPromise = (interpreter, ...args) => {
 };
 
 class RulesBased {
-    constructor(rulesFile) {
-      this.interpreter = new AimlHigh({}, {}, "");
+    constructor(rulesFile, history, previousAnswer) {
+      this.interpreter = new AimlHigh({}, history, previousAnswer);
       this.interpreter.loadFiles([rulesFile]);
     }
 
