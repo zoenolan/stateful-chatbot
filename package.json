@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/zoenolan/stateful-chatbot#readme",
   "devDependencies": {
-    "eslint": "^9.31.0",
+    "eslint": "^9.32.0",
     "globals": "^16.3.0"
   },
   "dependencies": {
